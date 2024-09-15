@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import logo from "../../assets/logo.png"
 import { useEffect, useState } from "react";
+import "./navbar.css"
 
 const Navbar = () => {
 
@@ -14,15 +15,14 @@ const Navbar = () => {
             document.documentElement.classList.remove('dark');
         }
     }, [darkMode])
-    console.log(darkMode);
     const links = <>
-        <Link className="text-lg font-semibold mx-2" to={'/'}><li>Home</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={'/all-jobs'}><li>All Jobs</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={'/applied-jobs'}><li>Applied Jobs</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={'/my-jobs'}><li>My Jobs</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={"/add-job"}><li>Add Job</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={'/blogs'}><li>Blogs</li></Link>
-        <Link className="text-lg font-semibold mx-2" to={'/profile'}><li>Profile</li></Link>
+        <NavLink className="text-lg  px-1  mx-1" to={'/'}><li>Home</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={'/all-jobs'}><li>All Jobs</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={'/applied-jobs'}><li>Applied Jobs</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={'/my-jobs'}><li>My Jobs</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={"/add-job"}><li>Add Job</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={'/blogs'}><li>Blogs</li></NavLink>
+        <NavLink className="text-lg  px-1  mx-1" to={'/profile'}><li>Profile</li></NavLink>
     </>
 
     return (
@@ -46,14 +46,14 @@ const Navbar = () => {
                         </div>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            className="menu menu-sm dropdown-content dark:bg-gray-900 bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             {
                                 links
                             }
                         </ul>
                     </div>
                     <img src={logo} alt="" className="w-12" />
-                    <a className="dark:text-white  btn btn-ghost text-2xl font-bold">Career<span className="text-primary-c">Nest</span></a>
+                    <a className="dark:text-white ml-3 text-2xl font-bold">Career<span className="text-primary-c">Nest</span></a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
@@ -62,7 +62,7 @@ const Navbar = () => {
                         }
                     </ul>
                 </div>
-                <div className="navbar-end">
+                <div className="navbar-end space-x-2">
                     <label className="swap swap-rotate" >
                         {/* this hidden checkbox controls the state */}
                         <input onClick={() => setDarkMode(!darkMode)} type="checkbox" className="theme-controller" value="synthwave" />
@@ -85,7 +85,7 @@ const Navbar = () => {
                                 d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
                         </svg>
                     </label>
-                    <a className="btn">Button</a>
+                    <a className="px-3 py-2 bg-primary-c text-white rounded">Login</a>
                 </div>
             </div>
         </div>
