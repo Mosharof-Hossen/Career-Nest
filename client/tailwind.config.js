@@ -4,8 +4,13 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'primary-c': '#34a853'
+      }
+    },
   },
   plugins: [
     // eslint-disable-next-line no-undef

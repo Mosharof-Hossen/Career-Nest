@@ -1,14 +1,16 @@
+
 import './App.css'
 import Footer from './Components/shared/Footer'
 import Navbar from './Components/shared/Navbar'
 import { Outlet } from "react-router-dom";
 
 function App() {
-
+  
+  
   return (
-    <div>
+    <div className=''>
       <Navbar></Navbar>
-      
+
       <Outlet />
 
       <Footer></Footer>
