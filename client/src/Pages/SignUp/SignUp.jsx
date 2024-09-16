@@ -1,25 +1,44 @@
 import { useForm } from "react-hook-form";
 import signupImage from "../../assets/login/login.png"
 import { FaGithub, FaGoogle } from 'react-icons/fa6';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useAuthContext from "../../Hooks/useAuthContext";
+import { updateProfile } from "firebase/auth";
+import Swal from 'sweetalert2'
+
 
 const SignUp = () => {
-    const { signUpUsingEmailPassword } = useAuthContext();
+    const { signUpUsingEmailPassword, user } = useAuthContext();
     const [err, setErr] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate()
     const onSubmit = data => {
-        console.log(data)
         signUpUsingEmailPassword(data.email, data.password)
             .then(res => {
-                console.log(res);
+                updateProfile(res.user, {
+                    displayName: data.name,
+                    photoURL: data.photoURL
+                })
+                    .then(() => {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Sign Up Done",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                            .then(() => {
+                                navigate("/")
+                            })
+                    })
+
             })
             .catch(() => {
                 setErr("Email Already in use.")
             })
     };
-    console.log(errors);
+    
 
     return (
         <div className="hero min-h-screen">
@@ -48,11 +67,13 @@ const SignUp = () => {
                             <label htmlFor="">
                                 <p className="text-xl font-semibold my-2">PhotoURL</p>
                                 <input className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your PhotoURL" {...register("photoURL", { required: true })} />
+                                <p>Demo: https://i.ibb.co.com/9cvXMDD/boy2.png</p>
                                 {
                                     errors?.photoURL?.type == "required" && (
                                         <p className="text-sm mt-1 text-red-500">PhotoURL is Required</p>
                                     )
                                 }
+
                             </label>
                             <label htmlFor="">
                                 <p className="text-xl font-semibold my-2">Email</p>
@@ -65,7 +86,7 @@ const SignUp = () => {
                             </label>
                             <label htmlFor="">
                                 <p className="text-xl font-semibold my-2">Password</p>
-                                <input className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="Password" placeholder="Enter Your Password" {...register("password", { required: true ,pattern:/^[A-Za-z\d]{6,}$/ })} />
+                                <input className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="Password" placeholder="Enter Your Password" {...register("password", { required: true, pattern: /^[A-Za-z\d]{6,}$/ })} />
                                 {
                                     errors?.password?.type == "required" && (
                                         <p className="text-sm mt-1 text-red-500">Password is Required</p>
