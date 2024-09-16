@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 
 
 const SignUp = () => {
-    const { signUpUsingEmailPassword } = useAuthContext();
+    const { signUpUsingEmailPassword, loginByGoogle, loginByGithub } = useAuthContext();
     const [err, setErr] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
@@ -37,7 +37,37 @@ const SignUp = () => {
                 setErr("Email Already in use.")
             })
     };
-    
+    const handleGoogleLogin = () => {
+        loginByGoogle()
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Successfully Login",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                    .then(() => {
+                        navigate("/")
+                    })
+            })
+    }
+
+    const handleGithubLogin = () => {
+        loginByGithub()
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Successfully Login",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                    .then(() => {
+                        navigate("/")
+                    })
+            })
+    }
 
     return (
         <div className="hero min-h-screen">
@@ -102,8 +132,8 @@ const SignUp = () => {
                             <p className="text-xl my-8 text-center font-bold">Have An Account?<Link to={'/login'} className="text-red-500"> Sign In</Link></p>
                             <div className="divider my-8 divider-success">Or</div>
                             <div className=" flex justify-center space-x-5">
-                                <button className="px-3 py-2 bg-primary-c text-white  flex items-center text-2xl rounded space-x-1"><FaGoogle></FaGoogle> <span>Google</span></button>
-                                <button className="px-3 py-2 bg-primary-c text-white  flex items-center text-2xl rounded space-x-1"><FaGithub></FaGithub> <span>Github</span></button>
+                                <button onClick={handleGoogleLogin} className="px-3 py-2 bg-primary-c text-white  flex items-center text-2xl rounded space-x-1"><FaGoogle></FaGoogle> <span>Google</span></button>
+                                <button onClick={handleGithubLogin} className="px-3 py-2 bg-primary-c text-white  flex items-center text-2xl rounded space-x-1"><FaGithub></FaGithub> <span>Github</span></button>
                             </div>
                         </form>
                     </div>
