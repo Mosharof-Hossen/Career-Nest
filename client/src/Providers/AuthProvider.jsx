@@ -37,7 +37,8 @@ const AuthProvider = ({ children }) => {
     const authInfo = {
         user,
         signUpUsingEmailPassword,
-        logOut
+        logOut,
+        signInUsingEmailPassword
     }
     return (
         <AuthContext.Provider value={authInfo}>

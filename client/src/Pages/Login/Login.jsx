@@ -2,12 +2,33 @@ import { useState } from "react";
 import loginImage from "../../assets/login/login.png"
 import { useForm } from 'react-hook-form';
 import { FaGithub, FaGoogle } from 'react-icons/fa6';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthContext from "../../Hooks/useAuthContext";
+import Swal from "sweetalert2";
 
 const Login = () => {
+    const { signInUsingEmailPassword } = useAuthContext();
     const [err, setErr] = useState("")
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        signInUsingEmailPassword(data.email, data.password)
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Successfully Login",
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                    .then(() => {
+                        navigate("/")
+                    })
+            })
+            .catch(() => {
+                setErr("Invalid Email or Password")
+            })
+    };
     console.log(errors);
     return (
         <div className="hero min-h-screen">
