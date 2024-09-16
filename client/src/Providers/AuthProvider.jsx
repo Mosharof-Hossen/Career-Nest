@@ -6,38 +6,45 @@ import auth from '../Firebase/Firebase';
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
+    const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
     const googleProvider = new GoogleAuthProvider();
     const githubProvider = new GithubAuthProvider();
 
     // Sign up Email password 
     const signUpUsingEmailPassword = (email, password) => {
+        setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     // Sign In Email Password
     const signInUsingEmailPassword = (email, password) => {
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
     // Login with Google
     const loginByGoogle = () => {
+        setLoading(true)
         return signInWithPopup(auth, googleProvider);
     }
 
     // LogIn by Github
     const loginByGithub = () => {
+        setLoading(true)
         return signInWithPopup(auth, githubProvider)
     }
 
     // Log Out 
     const logOut = () => {
+        setLoading(true)
         return signOut(auth);
     }
 
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            setLoading(false)
 
             return () => {
                 return unSubscribe()
@@ -52,7 +59,8 @@ const AuthProvider = ({ children }) => {
         logOut,
         signInUsingEmailPassword,
         loginByGithub,
-        loginByGoogle
+        loginByGoogle,
+        loading
     }
     return (
         <AuthContext.Provider value={authInfo}>

@@ -102,7 +102,6 @@ const SignUp = () => {
                                         <p className="text-sm mt-1 text-red-500">PhotoURL is Required</p>
                                     )
                                 }
-
                             </label>
                             <label htmlFor="">
                                 <p className="text-xl font-semibold my-2">Email</p>
