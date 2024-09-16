@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 
 
 const SignUp = () => {
-    const { signUpUsingEmailPassword, user } = useAuthContext();
+    const { signUpUsingEmailPassword } = useAuthContext();
     const [err, setErr] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
@@ -32,7 +32,6 @@ const SignUp = () => {
                                 navigate("/")
                             })
                     })
-
             })
             .catch(() => {
                 setErr("Email Already in use.")
