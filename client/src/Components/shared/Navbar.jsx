@@ -20,14 +20,20 @@ const Navbar = () => {
     const links = <>
         <NavLink className="text-lg  px-1  mx-1" to={'/'}><li>Home</li></NavLink>
         <NavLink className="text-lg  px-1  mx-1" to={'/all-jobs'}><li>All Jobs</li></NavLink>
-        <NavLink className="text-lg  px-1  mx-1" to={'/applied-jobs'}><li>Applied Jobs</li></NavLink>
-        <NavLink className="text-lg  px-1  mx-1" to={'/my-jobs'}><li>My Jobs</li></NavLink>
-        <NavLink className="text-lg  px-1  mx-1" to={"/add-job"}><li>Add Job</li></NavLink>
+        {
+            user &&
+            <>
+                <NavLink className="text-lg  px-1  mx-1" to={'/applied-jobs'}><li>Applied Jobs</li></NavLink>
+                <NavLink className="text-lg  px-1  mx-1" to={'/my-jobs'}><li>My Jobs</li></NavLink>
+                <NavLink className="text-lg  px-1  mx-1" to={"/add-job"}><li>Add Job</li></NavLink>
+            </>
+        }
+
         <NavLink className="text-lg  px-1  mx-1" to={'/blogs'}><li>Blogs</li></NavLink>
         <NavLink className="text-lg  px-1  mx-1" to={'/profile'}><li>Profile</li></NavLink>
     </>
 
-console.log(user);
+    console.log(user);
     return (
         <div >
             <div className="navbar  dark:bg-gray-900 dark:text-white bg-white text-black">
