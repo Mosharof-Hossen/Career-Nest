@@ -13,6 +13,7 @@ import Profile from "../Pages/Profile/Profile";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRouter from "./PrivateRouter";
+import JobDetails from "../Pages/JobDetails/JobDetails";
 
 
 const router = createBrowserRouter([
@@ -55,7 +56,12 @@ const router = createBrowserRouter([
             {
                 path: '/signup',
                 element: <SignUp></SignUp>
+            },
+            {
+                path: "/job-details/:id",
+                element: <PrivateRouter><JobDetails></JobDetails></PrivateRouter>
             }
+
         ]
     }
 ])

@@ -1,12 +1,12 @@
 import Banner from "../../Components/Banner/Banner";
-import FeaturedJobs from "../../Components/FeaturedJobs/FeaturedJobs";
+import JobFeaturesSection from "../../Components/FeaturedJobs/JobFeaturesSection";
 
 
 const Home = () => {
     return (
         <div>
             <Banner></Banner>
-            <FeaturedJobs></FeaturedJobs>
+            <JobFeaturesSection></JobFeaturesSection>
         </div>
     );
 };

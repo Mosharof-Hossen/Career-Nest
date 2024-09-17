@@ -1,7 +1,7 @@
 import axiosInstance from "./axiosInstance"
 
-const getAppJobsApi = async () => {
+const getAllJobApi = async () => {
     const response = await axiosInstance.get('/all-jobs');
     return response.data;
 }
-export default getAppJobsApi;
+export default getAllJobApi;
