@@ -4,6 +4,7 @@ import FeaturedJosDescription from "../../Components/FeaturedJobs/FeaturedJosDes
 import getAllJobApi from "../../api/getAllJobApi";
 import FeaturedJobCard from "../../Components/FeaturedJobs/FeaturedJobCard";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 const AllJobs = () => {
@@ -17,10 +18,10 @@ const AllJobs = () => {
         return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
     }
 
-    const filteredData = data.filter(job=>{
+    const filteredData = data.filter(job => {
         return job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
     })
-    
+console.log(filteredData);
     return (
 
         <div className="my-7 p-5 space-y-10">
@@ -42,10 +43,37 @@ const AllJobs = () => {
                 </label>
             </div>
 
-            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-5'>
-                {
-                    filteredData?.map(job => <FeaturedJobCard job={job} key={job._id}></FeaturedJobCard>)
-                }
+            <div className="overflow-x-auto">
+                <table className="table">
+                    {/* head */}
+                    <thead>
+                        <tr className="dark:text-white">
+                            <th></th>
+                            <th>Job Title</th>
+                            <th>Job Posting Date</th>
+                            <th>Salary Range</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {
+                            filteredData?.map((job, i) => <tr key={job._id} className="hover dark:hover:text-black">
+                                <th>{i+1}</th>
+                                <td>{job.jobTitle}</td>
+                                <td>{job.postingDate.split("T")[0]}</td>
+                                <td>{job.deadline}</td>
+                                <td><Link to={`/job-details/${job._id}`}><button className="px-3 py2 text-primary-c border border-primary-c rounded">Details</button></Link></td>
+                            </tr>
+
+
+
+                            )
+                        }
+
+
+                    </tbody>
+                </table>
             </div>
         </div>
     );
