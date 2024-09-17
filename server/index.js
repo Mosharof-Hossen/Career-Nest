@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 
 
@@ -34,9 +34,17 @@ async function run() {
 
         const jobsCollection = client.db("careerNestDB").collection('allJobs');
 
-        app.get("/all-jobs",async(req,res)=>{
+        app.get("/all-jobs", async (req, res) => {
             const result = await jobsCollection.find().toArray()
             res.send(result)
+        })
+
+        app.get("/job-details/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            console.log(query);
+            const response = await jobsCollection.findOne(query);
+            res.send(response)
         })
 
         app.post("/add-job", async (req, res) => {

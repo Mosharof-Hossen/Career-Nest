@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import FeaturedJobs from "../../Components/FeaturedJobs/FeaturedJobs";
 import FeaturedJosDescription from "../../Components/FeaturedJobs/FeaturedJosDescription";
 import getAllJobApi from "../../api/getAllJobApi";
-import FeaturedJobCard from "../../Components/FeaturedJobs/FeaturedJobCard";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 

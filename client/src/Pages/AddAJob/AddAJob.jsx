@@ -7,8 +7,6 @@ import Swal from "sweetalert2";
 const AddAJob = () => {
     const { user } = useAuthContext();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
-
     const mutation = useMutation({
         mutationFn: addJobApi,
         onSuccess: () => {
