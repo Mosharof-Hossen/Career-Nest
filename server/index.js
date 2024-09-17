@@ -34,6 +34,11 @@ async function run() {
 
         const jobsCollection = client.db("careerNestDB").collection('allJobs');
 
+        app.get("/all-jobs",async(req,res)=>{
+            const result = await jobsCollection.find().toArray()
+            res.send(result)
+        })
+
         app.post("/add-job", async (req, res) => {
             const job = req.body;
             const result = await jobsCollection.insertOne(job)
