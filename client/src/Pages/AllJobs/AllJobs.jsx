@@ -1,10 +1,9 @@
+import FeaturedJobs from "../../Components/FeaturedJobs/FeaturedJobs";
 
 
 const AllJobs = () => {
     return (
-        <div>
-            All Jobs
-        </div>
+        <FeaturedJobs></FeaturedJobs>
     );
 };
 
