@@ -1,9 +1,21 @@
 import { useForm } from "react-hook-form";
 import useAuthContext from "../../Hooks/useAuthContext";
-
+import { useMutation, } from '@tanstack/react-query';
+import addJobApi from "../../api/addJobApi";
 
 const AddAJob = () => {
     const { user } = useAuthContext();
+
+    const mutation = useMutation({
+        mutationFn: addJobApi,
+        onSuccess:(data)=>{
+            console.log(data);
+        },
+        onError:(err=>{
+            console.log(err);
+        })
+    })
+
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         data.email = user.email;
@@ -11,6 +23,7 @@ const AddAJob = () => {
         data.postingDate = new Date();
         data.jobApplicationNumber = 0
         console.log(data);
+        mutation.mutate(data);
     }
     return (
         <div className="md:p-10 p-5 mt-10 space-y-7 ">

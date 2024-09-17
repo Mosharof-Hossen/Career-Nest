@@ -7,6 +7,14 @@ require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Middleware function
+app.use(express.json())
+app.use(cors({
+    origin:[
+        'http://localhost:5173',
+    ],
+    credentials:true
+}))
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3ytf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -23,6 +31,13 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
+
+
+        app.post("/add-job",async( req,res)=>{
+            const data = req.body;
+            console.log(data);
+            res.send({success:"ok"})
+        })
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
