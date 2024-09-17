@@ -2,21 +2,32 @@ import { useForm } from "react-hook-form";
 import useAuthContext from "../../Hooks/useAuthContext";
 import { useMutation, } from '@tanstack/react-query';
 import addJobApi from "../../api/addJobApi";
+import Swal from "sweetalert2";
 
 const AddAJob = () => {
     const { user } = useAuthContext();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
 
     const mutation = useMutation({
         mutationFn: addJobApi,
-        onSuccess:(data)=>{
-            console.log(data);
+        onSuccess: () => {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Created",
+                showConfirmButton: false,
+                timer: 1000
+            })
+                .then(() => {
+                    reset()
+                })
         },
-        onError:(err=>{
+        onError: (err => {
             console.log(err);
         })
     })
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         data.email = user.email;
         data.displayName = user.displayName;
@@ -97,7 +108,7 @@ const AddAJob = () => {
 
                 <label htmlFor="">
                     <p className="text-xl font-semibold my-2">Job Description</p>
-                    <textarea className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Write Job Description...." rows={4} {...register("description", { required: true })} />
+                    <textarea className="px-2 py-2 text-justify bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Write Job Description...." rows={4} {...register("description", { required: true })} />
                     {
                         errors?.description?.type == "required" && (
                             <p className="text-sm mt-1 text-red-500">Description is Required</p>
