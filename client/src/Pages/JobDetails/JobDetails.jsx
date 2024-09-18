@@ -6,9 +6,14 @@ import { CiTimer } from "react-icons/ci";
 import { FaUsers, FaUserTie } from "react-icons/fa";
 import { GiBullseye } from "react-icons/gi";
 import Swal from 'sweetalert2';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ImCross } from "react-icons/im";
 
 const JobDetails = () => {
     const { id } = useParams();
+    const [err, setErr] = useState("")
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const { data, isLoading } = useQuery({
         queryKey: ["job-details", id],
@@ -19,7 +24,7 @@ const JobDetails = () => {
         return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
     }
 
-    const { _id, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
+    const { _id, email, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
     console.log(data);
     console.log(new Date(deadline) - new Date());
     const handleDeadLineAndModal = () => {
@@ -33,9 +38,16 @@ const JobDetails = () => {
             })
         }
         else {
-            document.getElementById('my_modal_2').showModal()
+            document.getElementById('my_modal_1').showModal()
         }
     }
+    const onSubmit = data => {
+        data.email = email,
+            data.name = displayName
+
+        console.log(data);
+    }
+    console.log(err);
     return (
         <div className="p-5">
             <div className="flex items-center flex-col md:flex-row gap-4 md:px-14 my-10">
@@ -43,19 +55,49 @@ const JobDetails = () => {
                     <button className="text-primary-c bg-green-200  px-2 py-1 rounded" disabled>{category}</button>
                     <h2 className="text-4xl font-bold">{jobTitle}</h2>
                     <p className='flex items-center gap-1 text-sm'><IoTimeOutline /><span>Posting Date: {postingDate.split("T")[0]}</span></p>
-                    <p className='flex items-center gap-1 text-sm'><CiTimer /><span className={new Date(deadline) - new Date()<0 && "text-red-500"}>Deadline: {deadline}</span></p>
+                    <p className='flex items-center gap-1 text-sm'><CiTimer /><span className={new Date(deadline) - new Date() < 0 ? "text-red-500" : ""}>Deadline: {deadline}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
                     <h3 className='flex text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>
                     <button onClick={handleDeadLineAndModal} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
-                    <dialog id="my_modal_2" className="modal">
-                        <div className="modal-box dark:bg-gray-800">
-                            <h3 className="font-bold text-lg">Hello!</h3>
-                            <p className="py-4">Press ESC key or click outside to close</p>
+
+                    <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
+                        <div className="modal-box dark:bg-gray-800 dark:text-white text-gray-500" >
+                            <h3 className="font-bold text-2xl">Ready To Apply?</h3>
+                            <p className="py-2 text-sm">Complete the eligibities checklist now and get started with your online application</p>
+                            <form onSubmit={handleSubmit(onSubmit)} className="">
+                                <label htmlFor="">
+                                    <p className="text-xl font-semibold my-2">Name</p>
+                                    <input defaultValue={displayName} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Name" {...register("name",)} />
+
+                                </label>
+
+                                <label htmlFor="">
+                                    <p className="text-xl font-semibold my-2">Email</p>
+                                    <input defaultValue={email} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="email" placeholder="Enter Your Email" {...register("email",)} />
+                                </label>
+
+                                <label htmlFor="">
+                                    <p className="text-xl font-semibold my-2">Resume Link</p>
+                                    <input className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Resume DriveURL" {...register("resumeUrl", { required: true })} />
+                                    {
+                                        errors?.resumeUrl?.type == "required" && (
+                                            <p className="text-sm mt-1 text-red-500">Resume is Required</p>
+                                        )
+                                    }
+                                </label>
+
+                                <input className="w-full mt-8 px-3 py-2 text-2xl rounded cursor-pointer bg-primary-c text-white" type="submit" value={"Sign Up"} />
+                                <p className="text-red-500 text-center mt-4">{err && err}</p>
+                            </form>
+                            <div className="modal-action">
+
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><ImCross /></button>
+                                </form>
+                            </div>
                         </div>
-                        <form method="dialog" className="modal-backdrop">
-                            <button>close</button>
-                        </form>
                     </dialog>
                 </div>
                 <div className="flex-1">
