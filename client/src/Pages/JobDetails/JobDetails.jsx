@@ -5,7 +5,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import { CiTimer } from "react-icons/ci";
 import { FaUsers, FaUserTie } from "react-icons/fa";
 import { GiBullseye } from "react-icons/gi";
-
+import Swal from 'sweetalert2';
 
 const JobDetails = () => {
     const { id } = useParams();
@@ -21,6 +21,21 @@ const JobDetails = () => {
 
     const { _id, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
     console.log(data);
+    console.log(new Date(deadline) - new Date());
+    const handleDeadLineAndModal = () => {
+        if ((new Date(deadline) - new Date()) < 0) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Deadline is Over.",
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+        else {
+            document.getElementById('my_modal_2').showModal()
+        }
+    }
     return (
         <div className="p-5">
             <div className="flex items-center flex-col md:flex-row gap-4 md:px-14 my-10">
@@ -28,11 +43,11 @@ const JobDetails = () => {
                     <button className="text-primary-c bg-green-200  px-2 py-1 rounded" disabled>{category}</button>
                     <h2 className="text-4xl font-bold">{jobTitle}</h2>
                     <p className='flex items-center gap-1 text-sm'><IoTimeOutline /><span>Posting Date: {postingDate.split("T")[0]}</span></p>
-                    <p className='flex items-center gap-1 text-sm'><CiTimer /><span>Deadline: {deadline}</span></p>
+                    <p className='flex items-center gap-1 text-sm'><CiTimer /><span className={new Date(deadline) - new Date()<0 && "text-red-500"}>Deadline: {deadline}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
                     <h3 className='flex text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>
-                    <button onClick={() => document.getElementById('my_modal_2').showModal()} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
+                    <button onClick={handleDeadLineAndModal} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
                     <dialog id="my_modal_2" className="modal">
                         <div className="modal-box dark:bg-gray-800">
                             <h3 className="font-bold text-lg">Hello!</h3>
@@ -48,7 +63,7 @@ const JobDetails = () => {
                 </div>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-5 md:p-10">
                 <div className="space-y-2">
                     <h2 className="text-3xl font-bold">Job Description</h2>
                     <p className="text-sm text-justify text-gray-500 dark:text-white">{description}</p>
