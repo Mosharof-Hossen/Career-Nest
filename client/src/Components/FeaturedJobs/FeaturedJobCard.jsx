@@ -45,6 +45,7 @@ const FeaturedJobCard = ({ job }) => {
                     <p className='flex items-center gap-1 text-sm'><CiTimer /><span>Deadline: {deadline}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
+               
                 </div>
                 <div className="flex items-center justify-between">
                     <h3 className='text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>
