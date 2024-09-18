@@ -33,6 +33,7 @@ async function run() {
         await client.connect();
 
         const jobsCollection = client.db("careerNestDB").collection('allJobs');
+        const applicationCollection = client.db("careerNestDB").collection('applications');
 
         app.get("/all-jobs", async (req, res) => {
             const result = await jobsCollection.find().toArray()
@@ -50,6 +51,12 @@ async function run() {
         app.post("/add-job", async (req, res) => {
             const job = req.body;
             const result = await jobsCollection.insertOne(job)
+            res.send(result)
+        })
+
+        app.post("/applications", async (req, res) => {
+            const data = req.body
+            const result = await applicationCollection.insertOne(data);
             res.send(result)
         })
         // Send a ping to confirm a successful connection

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import fetchJobDetails from "../../api/fetchJobDetails";
 import { IoTimeOutline } from "react-icons/io5";
@@ -6,27 +6,19 @@ import { CiTimer } from "react-icons/ci";
 import { FaUsers, FaUserTie } from "react-icons/fa";
 import { GiBullseye } from "react-icons/gi";
 import Swal from 'sweetalert2';
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ImCross } from "react-icons/im";
+import fetchPostApplicantInfo from "../../api/fetchPostApplicantInfo";
 
 const JobDetails = () => {
     const { id } = useParams();
-    const [err, setErr] = useState("")
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const { data, isLoading } = useQuery({
         queryKey: ["job-details", id],
         queryFn: () => fetchJobDetails(id)
 
     })
-    if (isLoading) {
-        return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
-    }
-
-    const { _id, email, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
-    console.log(data);
-    console.log(new Date(deadline) - new Date());
     const handleDeadLineAndModal = () => {
         if ((new Date(deadline) - new Date()) < 0) {
             Swal.fire({
@@ -41,13 +33,38 @@ const JobDetails = () => {
             document.getElementById('my_modal_1').showModal()
         }
     }
-    const onSubmit = data => {
-        data.email = email,
-            data.name = displayName
 
+    const mutation = useMutation({
+        mutationFn: fetchPostApplicantInfo,
+        onSuccess: () => {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Submitted",
+                showConfirmButton: false,
+                timer: 1000
+            })
+                .then(() => {
+                    reset()
+                })
+        }
+    })
+
+    if (isLoading) {
+        return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
+    }
+
+    const { email, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
+
+    const onSubmit = data => {
+        data.email = email;
+        data.name = displayName;
+        data.jobId = data?._id;
+
+        mutation.mutate(data)
         console.log(data);
     }
-    console.log(err);
+
     return (
         <div className="p-5">
             <div className="flex items-center flex-col md:flex-row gap-4 md:px-14 my-10">
@@ -87,14 +104,13 @@ const JobDetails = () => {
                                     }
                                 </label>
 
-                                <input className="w-full mt-8 px-3 py-2 text-2xl rounded cursor-pointer bg-primary-c text-white" type="submit" value={"Sign Up"} />
-                                <p className="text-red-500 text-center mt-4">{err && err}</p>
+                                <input className=" w-full mt-8 px-3 py-2 text-2xl rounded cursor-pointer bg-primary-c text-white" type="submit" value={"Submit Application"} />
                             </form>
                             <div className="modal-action">
 
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><ImCross /></button>
+                                    <button  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><ImCross /></button>
                                 </form>
                             </div>
                         </div>
