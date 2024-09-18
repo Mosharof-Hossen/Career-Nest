@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import fetchJobDetails from "../../api/fetchJobDetails";
 import { IoTimeOutline } from "react-icons/io5";
@@ -9,17 +9,49 @@ import Swal from 'sweetalert2';
 import { useForm } from "react-hook-form";
 import { ImCross } from "react-icons/im";
 import fetchPostApplicantInfo from "../../api/fetchPostApplicantInfo";
+import fetchUpdateJobApplicationNumber from "../../api/fetchUpdateJobInfo";
+import fetchApplicationCheck from "../../api/fetchApplicationCheck";
 
 const JobDetails = () => {
+    const queryClient = useQueryClient();
     const { id } = useParams();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const { data, isLoading } = useQuery({
         queryKey: ["job-details", id],
         queryFn: () => fetchJobDetails(id)
-
     })
-    const handleDeadLineAndModal = () => {
+
+    const applyVerificationMutation = useMutation({
+        mutationFn: fetchApplicationCheck,
+    })
+    const addApplicationMutation = useMutation({
+        mutationFn: fetchPostApplicantInfo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["application"] })
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Submitted",
+                showConfirmButton: false,
+                timer: 1500
+            })
+                .then(() => {
+                    data.jobApplicationNumber = data.jobApplicationNumber + 1
+                    reset()
+                })
+        }
+    })
+
+    const updateApplicationNumberMutation = useMutation({
+        mutationFn: fetchUpdateJobApplicationNumber,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['application Number Update', _id] })
+        }
+    })
+
+    const handleDeadLineAndModal = (id, email) => {
         if ((new Date(deadline) - new Date()) < 0) {
             Swal.fire({
                 position: "top-end",
@@ -27,44 +59,43 @@ const JobDetails = () => {
                 title: "Deadline is Over.",
                 showConfirmButton: false,
                 timer: 1500
-            })
+            }).then(() => { return })
         }
         else {
-            document.getElementById('my_modal_1').showModal()
+            applyVerificationMutation.mutate({ id, email }, {
+                onSuccess: (data) => {
+                    if (!data) {
+                        document.getElementById('my_modal_1').showModal()
+                    } else {
+                        console.log(data);
+                    }
+                }
+            })
         }
+
+        // 
+
     }
 
-    const mutation = useMutation({
-        mutationFn: fetchPostApplicantInfo,
-        onSuccess: () => {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "Successfully Submitted",
-                showConfirmButton: false,
-                timer: 1000
-            })
-                .then(() => {
-                    reset()
-                })
-        }
-    })
+
+
 
     if (isLoading) {
         return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
     }
 
-    const { email, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
+    const { _id, email, description, jobTitle, salaryRange, displayName, category, photoURL, postingDate, deadline, jobApplicationNumber } = data;
 
     const onSubmit = data => {
         data.email = email;
         data.name = displayName;
-        data.jobId = data?._id;
-
-        mutation.mutate(data)
+        data.jobId = _id;
+        console.log(data);
+        addApplicationMutation.mutate(data)
+        updateApplicationNumberMutation.mutate({ _id, jobApplicationNumber })
+        document.getElementById('my_modal_1').close()
         console.log(data);
     }
-
     return (
         <div className="p-5">
             <div className="flex items-center flex-col md:flex-row gap-4 md:px-14 my-10">
@@ -76,13 +107,13 @@ const JobDetails = () => {
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
                     <h3 className='flex text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>
-                    <button onClick={handleDeadLineAndModal} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
+                    <button onClick={() => handleDeadLineAndModal(_id, email)} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
 
                     <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
                         <div className="modal-box dark:bg-gray-800 dark:text-white text-gray-500" >
                             <h3 className="font-bold text-2xl">Ready To Apply?</h3>
                             <p className="py-2 text-sm">Complete the eligibities checklist now and get started with your online application</p>
-                            <form onSubmit={handleSubmit(onSubmit)} className="">
+                            <form onSubmit={handleSubmit(onSubmit)} method={errors} className="">
                                 <label htmlFor="">
                                     <p className="text-xl font-semibold my-2">Name</p>
                                     <input defaultValue={displayName} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Name" {...register("name",)} />
@@ -110,7 +141,7 @@ const JobDetails = () => {
 
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
-                                    <button  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><ImCross /></button>
+                                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"><ImCross /></button>
                                 </form>
                             </div>
                         </div>
@@ -157,6 +188,8 @@ const JobDetails = () => {
                     </div>
                 </div>
             </div>
+
+
         </div>
     );
 };
