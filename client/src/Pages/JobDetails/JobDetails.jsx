@@ -11,9 +11,11 @@ import { ImCross } from "react-icons/im";
 import fetchPostApplicantInfo from "../../api/fetchPostApplicantInfo";
 import fetchUpdateJobApplicationNumber from "../../api/fetchUpdateJobInfo";
 import fetchApplicationCheck from "../../api/fetchApplicationCheck";
+import { useState } from "react";
 
 const JobDetails = () => {
     const queryClient = useQueryClient();
+    const [applied, setApplied] = useState(false)
     const { id } = useParams();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
@@ -67,7 +69,14 @@ const JobDetails = () => {
                     if (!data) {
                         document.getElementById('my_modal_1').showModal()
                     } else {
-                        console.log(data);
+                        setApplied(true)
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "warning",
+                            title: "Already Applied",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => { return })
                     }
                 }
             })
@@ -107,7 +116,7 @@ const JobDetails = () => {
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
                     <h3 className='flex text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>
-                    <button onClick={() => handleDeadLineAndModal(_id, email)} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">Apply Job</button>
+                    <button disabled={applied} onClick={() => handleDeadLineAndModal(_id, email)} className=" text-xl text-white bg-primary-c px-4 py-3 rounded">{applied ? "Already Applied" : "Apply Job"}</button>
 
                     <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
                         <div className="modal-box dark:bg-gray-800 dark:text-white text-gray-500" >
