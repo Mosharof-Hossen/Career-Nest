@@ -54,6 +54,13 @@ async function run() {
             res.send(result)
         })
 
+        app.get("/applied-job/:email",async(req,res)=>{
+            const email = req.params.email;
+            const query = {email:email};
+            const result = await applicationCollection.find(query).toArray();
+            res.send(result)
+        })
+
         app.put("/job/:id", async (req, res) => {
             const id = req.params.id;
             console.log(id);

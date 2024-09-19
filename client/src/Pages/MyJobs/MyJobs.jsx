@@ -15,7 +15,7 @@ const MyJobs = () => {
     const queryClient = useQueryClient();
     const { user } = useAuthContext();
     const [selectedId, setSelectedId] = useState(null)
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors }, } = useForm();
 
     const { data, isLoading } = useQuery({
         queryKey: ["userData", user?.email],
@@ -92,12 +92,9 @@ const MyJobs = () => {
     }
     const onSubmit = data => {
         data.id = updatedData?._id
-        console.log(data);
         updateMutation.mutate(data)
 
     }
-    console.log();
-    console.log(updatedData);
     return (
         <div className='p-5 mt-5'>
             <div className="text-center space-y-5 mb-5">

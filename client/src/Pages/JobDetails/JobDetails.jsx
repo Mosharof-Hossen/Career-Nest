@@ -96,11 +96,10 @@ const JobDetails = () => {
         data.email = email;
         data.name = displayName;
         data.jobId = _id;
-        console.log(data);
+        data.category = category
         addApplicationMutation.mutate(data)
         updateApplicationNumberMutation.mutate({ _id, jobApplicationNumber })
         document.getElementById('my_modal_1').close()
-        console.log(data);
     }
     return (
         <div className="p-5">
