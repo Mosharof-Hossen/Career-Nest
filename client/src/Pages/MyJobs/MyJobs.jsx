@@ -1,21 +1,49 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAuthContext from '../../Hooks/useAuthContext';
 import fetchMyJobs from '../../api/fetchMyJobs';
 import { Link } from 'react-router-dom';
 import { FaTrashAlt } from "react-icons/fa";
+import fetchDeleteMyJob from '../../api/fetchDeleteMyJob';
+import Swal from 'sweetalert2';
 
 const MyJobs = () => {
+    const queryClient = useQueryClient();
     const { user } = useAuthContext();
     const { data, isLoading } = useQuery({
         queryKey: ["userData", user?.email],
         queryFn: () => fetchMyJobs(user.email),
         enabled: !!user?.email
     })
+
+    const deleteMutation = useMutation({
+        mutationFn: fetchDeleteMyJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["my-job"])
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+            });
+        }
+    })
+
     if (isLoading) {
         return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
     }
     const deleteHandle = (id) => {
-        console.log(id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteMutation.mutate({ id: id })
+            }
+        });
     }
     console.log(data);
     return (
