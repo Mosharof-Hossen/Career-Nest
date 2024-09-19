@@ -7,12 +7,15 @@ import fetchDeleteMyJob from '../../api/fetchDeleteMyJob';
 import Swal from 'sweetalert2';
 import fetchJobDetails from '../../api/fetchJobDetails';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ImCross } from 'react-icons/im';
+import fetchUpdatePut from '../../api/fetchUpdatePut';
 
 const MyJobs = () => {
     const queryClient = useQueryClient();
     const { user } = useAuthContext();
     const [selectedId, setSelectedId] = useState(null)
-
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const { data, isLoading } = useQuery({
         queryKey: ["userData", user?.email],
@@ -32,7 +35,22 @@ const MyJobs = () => {
         }
     })
 
-    const { data: updatedData, isLoading: loading, refetch } = useQuery({
+    const updateMutation = useMutation({
+        mutationFn: fetchUpdatePut,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["update-job"])
+            document.getElementById('updateModal').close()
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Update Successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    })
+
+    const { data: updatedData, refetch, } = useQuery({
         queryKey: ['fetchedDataByID', selectedId],
         queryFn: () => fetchJobDetails(selectedId),
         // Disable automatic fetching
@@ -48,9 +66,9 @@ const MyJobs = () => {
     if (isLoading) {
         return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
     }
-    if (loading) {
-        return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
-    }
+    // if (loading) {
+    //     return <div className='text-center mt-20'><span className='loading loading-bars loading-lg'></span></div>
+    // }
 
 
     const deleteHandle = (id) => {
@@ -68,13 +86,17 @@ const MyJobs = () => {
             }
         });
     }
-
-
-
     const handleUpdate = (id) => {
-        console.log(id);
         setSelectedId(id);
+        document.getElementById('updateModal').showModal()
     }
+    const onSubmit = data => {
+        data.id = updatedData?._id
+        console.log(data);
+        updateMutation.mutate(data)
+
+    }
+    console.log();
     console.log(updatedData);
     return (
         <div className='p-5 mt-5'>
@@ -121,32 +143,80 @@ const MyJobs = () => {
                 </table>
             </div>
 
-            {/* <dialog id="my_modal_1" className="modal modal-bottom sm:modal-middle">
+
+            <dialog id="updateModal" className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box dark:bg-gray-800 dark:text-white text-gray-500" >
                     <h3 className="font-bold text-2xl">Ready To Apply?</h3>
                     <p className="py-2 text-sm">Complete the eligibities checklist now and get started with your online application</p>
                     <form onSubmit={handleSubmit(onSubmit)} method={errors} className="">
                         <label htmlFor="">
                             <p className="text-xl font-semibold my-2">Name</p>
-                            <input defaultValue={displayName} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Name" {...register("name",)} />
-
+                            <input defaultValue={user?.displayName} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Name" {...register("displayName",)} />
                         </label>
 
                         <label htmlFor="">
                             <p className="text-xl font-semibold my-2">Email</p>
-                            <input defaultValue={email} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="email" placeholder="Enter Your Email" {...register("email",)} />
+                            <input defaultValue={user?.email} disabled className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="email" placeholder="Enter Your Email" {...register("email", {})} />
                         </label>
 
                         <label htmlFor="">
-                            <p className="text-xl font-semibold my-2">Resume Link</p>
-                            <input className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your Resume DriveURL" {...register("resumeUrl", { required: true })} />
+                            <p className="text-xl font-semibold my-2">Job Title</p>
+                            <input defaultValue={updatedData?.jobTitle} className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Job Title" {...register("jobTitle", { required: true })} />
                             {
-                                errors?.resumeUrl?.type == "required" && (
-                                    <p className="text-sm mt-1 text-red-500">Resume is Required</p>
+                                errors?.jobTitle?.type == "required" && (
+                                    <p className="text-sm mt-1 text-red-500">Job Title is Required</p>
                                 )
                             }
                         </label>
 
+                        <label className="text-xl font-semibold">Job Category:</label>
+                        <select {...register("category")} className="text-xl border-2 border-black px-2 py-1 rounded ml-3 my-3  bg-white dark:bg-gray-500 dark:text-white text-black">
+                            <option disabled={true}>{updatedData?.category}</option>
+                            <option value="On-Side">On-Site</option>
+                            <option value="Remote">Remote</option>
+                            <option value="Part-Time">Part-Time</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+
+                        <label htmlFor="">
+                            <p className="text-xl font-semibold my-2">Salary Range</p>
+                            <input defaultValue={updatedData?.salaryRange} className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Salary Range" {...register("salaryRange", { required: true })} />
+                            {
+                                errors?.salaryRange?.type == "required" && (
+                                    <p className="text-sm mt-1 text-red-500">Salary Range is Required</p>
+                                )
+                            }
+                        </label>
+
+                        <label htmlFor="">
+                            <p className="text-xl font-semibold my-2">Cover Image Url</p>
+                            <input defaultValue={updatedData?.photoURL} className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Enter Your PhotoURL" {...register("photoURL", { required: true })} />
+                            {
+                                errors?.photoURL?.type == "required" && (
+                                    <p className="text-sm mt-1 text-red-500">PhotoURL is Required</p>
+                                )
+                            }
+                        </label>
+
+                        <label htmlFor="">
+                            <p className="text-xl font-semibold my-2">Deadline</p>
+                            <input defaultValue={updatedData?.deadline} className="px-2 py-2 bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="date"  {...register("deadline", { required: true })} />
+                            {
+                                errors?.deadline?.type == "required" && (
+                                    <p className="text-sm mt-1 text-red-500">Deadline is Required</p>
+                                )
+                            }
+                        </label>
+
+                        <label htmlFor="">
+                            <p className="text-xl font-semibold my-2">Job Description</p>
+                            <textarea defaultValue={updatedData?.description} value={updatedData?.description} className="px-2 py-2 text-justify bg-white dark:bg-gray-500 dark:text-white text-black border rounded w-full" type="text" placeholder="Write Job Description...." rows={4} {...register("description", { required: true })} />
+                            {
+                                errors?.description?.type == "required" && (
+                                    <p className="text-sm mt-1 text-red-500">Description is Required</p>
+                                )
+                            }
+                        </label>
                         <input className=" w-full mt-8 px-3 py-2 text-2xl rounded cursor-pointer bg-primary-c text-white" type="submit" value={"Submit Application"} />
                     </form>
                     <div className="modal-action">
@@ -156,8 +226,8 @@ const MyJobs = () => {
                         </form>
                     </div>
                 </div>
-            </dialog> */}
-        </div>
+            </dialog >
+        </div >
     );
 };
 

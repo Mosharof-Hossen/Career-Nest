@@ -68,6 +68,23 @@ async function run() {
             res.send(result)
         })
 
+        app.put("/update", async (req, res) => {
+            const data = req.body;
+            const query = { _id: new ObjectId(data?.id) }
+            const updatedData = {
+                $set: {
+                    jobTitle: data.jobTitle,
+                    category: data.category,
+                    salaryRange: data.salaryRange,
+                    photoURL: data.photoURL,
+                    deadline: data.deadline,
+                    description: data.description
+                }
+            }
+            const result = await jobsCollection.updateOne(query, updatedData);
+            res.send(result)
+        })
+
         app.post("/add-job", async (req, res) => {
             const job = req.body;
             const result = await jobsCollection.insertOne(job)
