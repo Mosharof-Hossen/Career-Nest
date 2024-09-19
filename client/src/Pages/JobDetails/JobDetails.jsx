@@ -96,7 +96,10 @@ const JobDetails = () => {
         data.email = email;
         data.name = displayName;
         data.jobId = _id;
-        data.category = category
+        data.category = category;
+        data.jobTitle = jobTitle;
+        data.applicationDate = new Date();
+        data.status = "In Review"
         addApplicationMutation.mutate(data)
         updateApplicationNumberMutation.mutate({ _id, jobApplicationNumber })
         document.getElementById('my_modal_1').close()

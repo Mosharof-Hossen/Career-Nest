@@ -169,7 +169,7 @@ const MyJobs = () => {
                         <label className="text-xl font-semibold">Job Category:</label>
                         <select {...register("category")} className="text-xl border-2 border-black px-2 py-1 rounded ml-3 my-3  bg-white dark:bg-gray-500 dark:text-white text-black">
                             <option disabled={true}>{updatedData?.category}</option>
-                            <option value="On-Side">On-Site</option>
+                            <option value="On-Site">On-Site</option>
                             <option value="Remote">Remote</option>
                             <option value="Part-Time">Part-Time</option>
                             <option value="Hybrid">Hybrid</option>
