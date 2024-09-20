@@ -4,7 +4,7 @@ import { IoRestaurantSharp } from "react-icons/io5";
 const ExploreCategory = () => {
     return (
         <div className="p-5">
-            <div className="text-center space-y-5 mb-5">
+            <div className="text-center space-y-5 mb-10">
                 <h2 className="text-3xl font-bold">Explore Top Categories</h2>
                 <p className="max-w-3xl mx-auto">Discover the most popular job categories tailored to your expertise and career goals.</p>
             </div>

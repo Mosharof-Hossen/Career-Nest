@@ -37,7 +37,7 @@ const FeaturedJobCard = ({ job }) => {
             <div className="card-body ">
                 <div className='flex justify-between items-center'>
                     <h2 className="text-2xl font-bold">{jobTitle}</h2>
-                    <button className='py-1 px-2 bg-green-100 text-primary-c rounded' disabled>{category}</button>
+                    <button className='py-1 px-2 bg-red-100 text-red-500 rounded' disabled>{category}</button>
                 </div>
 
                 <div className='text-gray-500 dark:text-white space-y-1'>

@@ -1,6 +1,7 @@
 import Banner from "../../Components/Banner/Banner";
 import ExploreCategory from "../../Components/ExploreCategory/ExploreCategory";
 import JobFeaturesSection from "../../Components/FeaturedJobs/JobFeaturesSection";
+import Review from "../../Components/Review/Review";
 import Stat from "../../Components/Stat/Stat";
 
 
@@ -11,6 +12,7 @@ const Home = () => {
             <Stat></Stat>
             <JobFeaturesSection></JobFeaturesSection>
             <ExploreCategory></ExploreCategory>
+            <Review></Review>
         </div>
     );
 };
