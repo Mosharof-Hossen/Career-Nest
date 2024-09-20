@@ -34,7 +34,6 @@ const Navbar = () => {
         <NavLink className="text-lg  px-1  mx-1" to={'/profile'}><li>Profile</li></NavLink>
     </>
 
-    console.log(user);
     return (
         <div >
             <div className="navbar  dark:bg-gray-900 dark:text-white bg-white text-black">

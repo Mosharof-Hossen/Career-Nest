@@ -2,12 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
-
+const jwt = require("jsonwebtoken");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware function
+app.use(cookieParser())
+
 app.use(express.json())
 app.use(cors({
     origin: [
@@ -15,6 +18,21 @@ app.use(cors({
     ],
     credentials: true
 }))
+
+const verifyToken = (req, res, next) => {
+    const token = req?.cookies?.token;
+    if (!token) {
+        return res.status(403).json({ message: 'Token is missing. Access denied!' });
+    }
+    jwt.verify(token, process.env.JWT_TOKEN, async (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid or expired token!' });
+        }
+        req.tokenUser = user;
+        next();
+    })
+
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3ytf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -35,6 +53,20 @@ async function run() {
         const jobsCollection = client.db("careerNestDB").collection('allJobs');
         const applicationCollection = client.db("careerNestDB").collection('applications');
 
+
+        // Auth JWT
+        app.post("/jwt", async (req, res) => {
+            const user = req.body;
+            const token = jwt.sign(user, process.env.JWT_TOKEN, { expiresIn: '1h' })
+            res.cookie("token", token, {
+                httpOnly: true,
+                // sameSite: "none",
+                secure: false
+            })
+            res.send({ success: true })
+        })
+
+        // *********************************************************
         app.get("/all-jobs", async (req, res) => {
             const result = await jobsCollection.find().toArray()
             res.send(result)
@@ -47,16 +79,23 @@ async function run() {
             res.send(response)
         })
 
-        app.get('/my-jobs', async (req, res) => {
+        app.get('/my-jobs', verifyToken, async (req, res) => {
+            const user = req.tokenUser
             const email = req.query.email;
+            if (user.email !== email) {
+                return res.status(403).send({ message: "Forbidden Access" })
+            }
             const query = { email: email }
             const result = await jobsCollection.find(query).toArray();
             res.send(result)
         })
 
-        app.get("/applied-job/:email",async(req,res)=>{
+        app.get("/applied-job/:email", verifyToken, async (req, res) => {
             const email = req.params.email;
-            const query = {email:email};
+            const query = { email: email };
+            if (user.email !== email) {
+                return res.status(403).send({ message: "Forbidden Access" })
+            }
             const result = await applicationCollection.find(query).toArray();
             res.send(result)
         })

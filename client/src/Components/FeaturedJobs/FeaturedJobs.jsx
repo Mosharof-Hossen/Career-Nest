@@ -7,7 +7,7 @@ import getAllJobApi from '../../api/getAllJobApi';
 const FeaturedJobs = () => {
     const [selectedJob, setSelectedJob] = useState("All")
     const location = useLocation()
-    console.log(location);
+    
     const { data, isLoading } = useQuery({
         queryKey: ['all-jobs-homePage'],
         queryFn: getAllJobApi,
