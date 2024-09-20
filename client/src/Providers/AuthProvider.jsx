@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from 'react';
 import auth from '../Firebase/Firebase';
 import axiosInstance from "../api/axiosInstance";
 
+
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -50,12 +51,13 @@ const AuthProvider = ({ children }) => {
             const jwt = { email: currentUser?.email, userId: currentUser?.uid }
             if (currentUser) {
                 axiosInstance.post("/jwt", jwt)
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
+                        // console.log(data);
                     })
             }
             else {
-                axiosInstance.post("/logout")
+                axiosInstance.post("/logout",jwt)
+                // .then(data=>console.log(data))
             }
             return () => {
                 return unSubscribe()

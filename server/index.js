@@ -33,6 +33,11 @@ const verifyToken = (req, res, next) => {
     })
 
 }
+const cookieOptions = {
+    httpOnly: true,
+    // sameSite: "none",
+    secure: false
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3ytf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -58,12 +63,12 @@ async function run() {
         app.post("/jwt", async (req, res) => {
             const user = req.body;
             const token = jwt.sign(user, process.env.JWT_TOKEN, { expiresIn: '1h' })
-            res.cookie("token", token, {
-                httpOnly: true,
-                // sameSite: "none",
-                secure: false
-            })
+            res.cookie("token", token, cookieOptions)
             res.send({ success: true })
+        })
+
+        app.post("/logout", async (req, res) => {
+            res.clearCookie('token', { ...cookieOptions, maxAge: 0 }).send({ success: "token remove" })
         })
 
         // *********************************************************
@@ -81,7 +86,7 @@ async function run() {
 
         app.get('/my-jobs', verifyToken, async (req, res) => {
             const email = req.query.email;
-            if ( req.tokenUser.email !== email) {
+            if (req.tokenUser.email !== email) {
                 return res.status(403).send({ message: "Forbidden Access" })
             }
             const query = { email: email }
