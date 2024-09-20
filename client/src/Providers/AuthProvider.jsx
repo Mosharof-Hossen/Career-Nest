@@ -47,12 +47,15 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             setLoading(false)
             console.log(currentUser);
+            const jwt = { email: currentUser?.email, userId: currentUser?.uid }
             if (currentUser) {
-                const jwt = { email: currentUser?.email, userId: currentUser?.uid }
                 axiosInstance.post("/jwt", jwt)
                     .then(data => {
                         console.log(data);
                     })
+            }
+            else {
+                axiosInstance.post("/logout")
             }
             return () => {
                 return unSubscribe()

@@ -80,9 +80,8 @@ async function run() {
         })
 
         app.get('/my-jobs', verifyToken, async (req, res) => {
-            const user = req.tokenUser
             const email = req.query.email;
-            if (user.email !== email) {
+            if ( req.tokenUser.email !== email) {
                 return res.status(403).send({ message: "Forbidden Access" })
             }
             const query = { email: email }
@@ -93,7 +92,7 @@ async function run() {
         app.get("/applied-job/:email", verifyToken, async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
-            if (user.email !== email) {
+            if (req.tokenUser.email !== email) {
                 return res.status(403).send({ message: "Forbidden Access" })
             }
             const result = await applicationCollection.find(query).toArray();
