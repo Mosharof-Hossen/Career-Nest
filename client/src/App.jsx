@@ -21,7 +21,7 @@ function App() {
       <motion.div
         style={{
           scaleX: scaleX, // Animate scaling of an element as the page scrolls
-          height: "10px",
+          height: "7px",
           background: "red",
           position: "fixed",
           top: 0,
