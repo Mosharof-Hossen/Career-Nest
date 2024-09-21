@@ -39,3 +39,22 @@
 8.Font Awesome icon.
 
 ## Home Page:
+![Home page](https://github.com/user-attachments/assets/3299522e-5f79-49cd-8346-56db507f6cc0)
+
+## All Jobs
+![all jobs](https://github.com/user-attachments/assets/05bbc8b7-3e4a-43eb-ac8a-7c83c99f3387)
+
+## Applied Jobs
+![appliedjob](https://github.com/user-attachments/assets/a386436c-6c91-4817-9a88-f90bce62c1bc)
+
+## My Jobs
+![myjob](https://github.com/user-attachments/assets/cbdbab20-3dc4-4c86-afb2-44d7683c5106)
+
+## Add Job
+![add job](https://github.com/user-attachments/assets/9a9a3194-7132-4be2-b32d-021af9d1815f)
+
+## Blogs
+![blogs](https://github.com/user-attachments/assets/3a5ca822-a69b-4ef0-9fbc-f0d4974f033c)
+
+## Login
+![Login](https://github.com/user-attachments/assets/95cbb3b8-3b23-49f1-94e1-6c65a15b493e)
