@@ -41,6 +41,9 @@
 ## Home Page:
 ![Home page](https://github.com/user-attachments/assets/3299522e-5f79-49cd-8346-56db507f6cc0)
 
+## Job Details
+![jobdetail](https://github.com/user-attachments/assets/a510d547-f5c1-4d80-a9b5-0da93bae1004)
+
 ## All Jobs
 ![all jobs](https://github.com/user-attachments/assets/05bbc8b7-3e4a-43eb-ac8a-7c83c99f3387)
 
