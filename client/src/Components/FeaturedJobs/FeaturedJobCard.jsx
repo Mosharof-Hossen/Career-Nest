@@ -3,7 +3,7 @@ import { FaUsers, FaUserTie } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import { IoTimeOutline } from "react-icons/io5";
 import useAuthContext from '../../Hooks/useAuthContext';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 const FeaturedJobCard = ({ job }) => {

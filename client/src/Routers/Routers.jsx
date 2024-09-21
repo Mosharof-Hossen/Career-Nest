@@ -15,6 +15,7 @@ import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRouter from "./PrivateRouter";
 import JobDetails from "../Pages/JobDetails/JobDetails";
 import ErroPage from "../Pages/ErroPage/ErroPage";
+import BlogOne from "../Pages/Blogs/BlogOne";
 
 
 const router = createBrowserRouter([
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
             {
                 path: "/job-details/:id",
                 element: <PrivateRouter><JobDetails></JobDetails></PrivateRouter>
+            },
+            {
+                path:"/blog-one",
+                element:<BlogOne></BlogOne>
             }
 
         ]

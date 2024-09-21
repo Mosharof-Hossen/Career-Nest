@@ -19,7 +19,6 @@ const AllJobs = () => {
     const filteredData = data.filter(job => {
         return job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
     })
-console.log(filteredData);
     return (
 
         <div className="my-7 p-5 space-y-10">

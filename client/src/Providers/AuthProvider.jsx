@@ -47,7 +47,6 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setLoading(false)
-            console.log(currentUser);
             const jwt = { email: currentUser?.email, userId: currentUser?.uid }
             if (currentUser) {
                 axiosInstance.post("/jwt", jwt)
