@@ -12,6 +12,7 @@ import fetchPostApplicantInfo from "../../api/fetchPostApplicantInfo";
 import fetchUpdateJobApplicationNumber from "../../api/fetchUpdateJobInfo";
 import fetchApplicationCheck from "../../api/fetchApplicationCheck";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 const JobDetails = () => {
     const queryClient = useQueryClient();
@@ -106,6 +107,9 @@ const JobDetails = () => {
     }
     return (
         <div className="p-5">
+            <Helmet>
+                <title>Career Nest || Job Details</title>
+            </Helmet>
             <div className="flex items-center flex-col md:flex-row gap-4 md:px-14 my-10">
                 <div className="space-y-2 flex-1 text-center md:text-left ">
                     <button className="text-primary-c bg-green-200  px-2 py-1 rounded" disabled>{category}</button>

@@ -3,6 +3,7 @@ import FeaturedJosDescription from "../../Components/FeaturedJobs/FeaturedJosDes
 import getAllJobApi from "../../api/getAllJobApi";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 
 const AllJobs = () => {
@@ -22,6 +23,9 @@ const AllJobs = () => {
     return (
 
         <div className="my-7 p-5 space-y-10">
+            <Helmet>
+                <title>Career Nest || All Jobs</title>
+            </Helmet>
             <FeaturedJosDescription></FeaturedJosDescription>
 
             <div className="max-w-xl mx-auto">

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 
 const AppliedJobsDetails = ({ summery }) => {
-  console.log(summery);
   return (
     <Document>
       <Page size="A4" style={styles.page}>

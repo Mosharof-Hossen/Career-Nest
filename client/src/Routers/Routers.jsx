@@ -9,7 +9,6 @@ import AppliedJobs from "../Pages/AppliedJobs/AppliedJobs";
 import MyJobs from "../Pages/MyJobs/MyJobs";
 import AddAJob from "../Pages/AddAJob/AddAJob";
 import Blogs from "../Pages/Blogs/Blogs";
-import Profile from "../Pages/Profile/Profile";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRouter from "./PrivateRouter";
@@ -49,10 +48,6 @@ const router = createBrowserRouter([
             {
                 path: "/blogs",
                 element: <Blogs></Blogs>
-            },
-            {
-                path: "/profile",
-                element: <PrivateRouter><Profile></Profile></PrivateRouter>
             },
             {
                 path: "/login",

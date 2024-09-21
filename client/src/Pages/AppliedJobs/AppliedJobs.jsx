@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAuthContext from '../../Hooks/useAuthContext';
 import fetchGetAppliedJob from '../../api/FetchGetAppliedJob';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const AppliedJobs = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -24,6 +25,9 @@ const AppliedJobs = () => {
     })
     return (
         <div className='p-5'>
+            <Helmet>
+                <title>Career Nest || Applied Jobs</title>
+            </Helmet>
             <div className='space-y-10'>
                 <div className="text-center space-y-5 mb-5">
                     <h2 className="text-3xl font-bold">Applied Job Listings</h2>

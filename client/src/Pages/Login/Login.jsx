@@ -5,13 +5,13 @@ import { FaGithub, FaGoogle } from 'react-icons/fa6';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthContext from "../../Hooks/useAuthContext";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
     const { signInUsingEmailPassword, loginByGoogle, loginByGithub } = useAuthContext();
     const [err, setErr] = useState("")
     const navigate = useNavigate();
     const location = useLocation()
-    console.log(location);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         signInUsingEmailPassword(data.email, data.password)
@@ -65,6 +65,9 @@ const Login = () => {
     }
     return (
         <div className="hero min-h-screen">
+            <Helmet>
+                <title>Career Nest || Login</title>
+            </Helmet>
             <div className="hero-content flex-col lg:flex-row lg:gap-20 items-center">
                 <div className="text-center lg:text-left">
                     <img src={loginImage} alt="" />

@@ -3,6 +3,7 @@ import useAuthContext from "../../Hooks/useAuthContext";
 import { useMutation, } from '@tanstack/react-query';
 import addJobApi from "../../api/addJobApi";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const AddAJob = () => {
     const { user } = useAuthContext();
@@ -36,6 +37,9 @@ const AddAJob = () => {
     }
     return (
         <div className="md:p-10 p-5 mt-10 space-y-7 ">
+            <Helmet>
+                <title>Career Nest || Add Job</title>
+            </Helmet>
             <div className="text-center space-y-5">
                 <h2 className="text-4xl font-bold">Add A New Job</h2>
                 <p className="text-sm  text-center max-w-xl mx-auto">Easily create and publish your job listing by filling out key details like job title, category, salary, and description. Upload a banner and set application deadlines to attract the best candidates. Preview and submit in just a few clicks!</p>

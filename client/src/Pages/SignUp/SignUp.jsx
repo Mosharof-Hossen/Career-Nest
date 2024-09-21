@@ -6,6 +6,7 @@ import { useState } from "react";
 import useAuthContext from "../../Hooks/useAuthContext";
 import { updateProfile } from "firebase/auth";
 import Swal from 'sweetalert2'
+import { Helmet } from "react-helmet-async";
 
 
 const SignUp = () => {
@@ -71,6 +72,9 @@ const SignUp = () => {
 
     return (
         <div className="hero min-h-screen">
+             <Helmet>
+                <title>Career Nest || Sign Up</title>
+            </Helmet>
             <div className="flex flex-col lg:flex-row lg:gap-20 items-center">
                 <div className="text-center lg:text-left flex-1">
                     <img src={signupImage} alt="" className="w-fit" />

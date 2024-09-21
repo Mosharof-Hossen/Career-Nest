@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ImCross } from 'react-icons/im';
 import fetchUpdatePut from '../../api/fetchUpdatePut';
+import { Helmet } from 'react-helmet-async';
 
 const MyJobs = () => {
     const queryClient = useQueryClient();
@@ -97,6 +98,9 @@ const MyJobs = () => {
     }
     return (
         <div className='p-5 mt-5'>
+            <Helmet>
+                <title>Career Nest || My Jobs</title>
+            </Helmet>
             <div className="text-center space-y-5 mb-5">
                 <h2 className="text-3xl font-bold">My Posted Jobs</h2>
                 <p className="max-w-3xl mx-auto">Manage and review the jobs you have created. Track application progress, update job details, and keep your listings up to date for prospective candidates.</p>

@@ -2,11 +2,15 @@ import { Link } from "react-router-dom";
 import blog1 from "../../assets/blogs/blog1.png"
 import blog3 from "../../assets/blogs/blog3.png"
 import blog2 from "../../assets/blogs/blog2.jpg"
+import { Helmet } from "react-helmet-async";
 
 const Blogs = () => {
 
     return (
         <div className="mt-10 ">
+            <Helmet>
+                <title>Career Nest || Blogs</title>
+            </Helmet>
             <div className="text-center space-y-5 mb-5">
                 <h2 className="text-3xl font-bold">Career Insights and Tips</h2>
                 <p className="max-w-3xl mx-auto">Stay updated with the latest career advice, industry trends, and job search tips through our curated blogs.</p>

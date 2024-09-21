@@ -31,7 +31,6 @@ const Navbar = () => {
         }
 
         <NavLink className="text-lg  px-1  mx-1" to={'/blogs'}><li>Blogs</li></NavLink>
-        <NavLink className="text-lg  px-1  mx-1" to={'/profile'}><li>Profile</li></NavLink>
     </>
 
     return (
