@@ -15,6 +15,7 @@ app.use(express.json())
 app.use(cors({
     origin: [
         'http://localhost:5173',
+        'https://career-nest-app.web.app'
     ],
     credentials: true
 }))
@@ -35,9 +36,9 @@ const verifyToken = (req, res, next) => {
 }
 const cookieOptions = {
     httpOnly: true,
-    // sameSite: "none",
-    secure: false
-}
+    sameSite: "None",
+    secure: true,
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3ytf5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -53,7 +54,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const jobsCollection = client.db("careerNestDB").collection('allJobs');
         const applicationCollection = client.db("careerNestDB").collection('applications');
@@ -97,7 +98,7 @@ async function run() {
         app.get("/applied-job/:email", verifyToken, async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
-            if (req.tokenUser.email !== email) {
+            if (req?.tokenUser?.email !== email) {
                 return res.status(403).send({ message: "Forbidden Access" })
             }
             const result = await applicationCollection.find(query).toArray();
@@ -165,7 +166,7 @@ async function run() {
         })
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
+        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error

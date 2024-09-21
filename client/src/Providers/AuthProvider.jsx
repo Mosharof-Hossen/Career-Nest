@@ -49,13 +49,13 @@ const AuthProvider = ({ children }) => {
             setLoading(false)
             const jwt = { email: currentUser?.email, userId: currentUser?.uid }
             if (currentUser) {
-                axiosInstance.post("/jwt", jwt)
+                axiosInstance.post("/jwt", jwt, { withCredentials: true })
                     .then(() => {
                         // console.log(data);
                     })
             }
             else {
-                axiosInstance.post("/logout",jwt)
+                axiosInstance.post("/logout", jwt, { withCredentials: true })
                 // .then(data=>console.log(data))
             }
             return () => {
