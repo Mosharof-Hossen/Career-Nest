@@ -17,6 +17,7 @@ import JobDetails from "../Pages/JobDetails/JobDetails";
 import ErroPage from "../Pages/ErroPage/ErroPage";
 import BlogOne from "../Pages/Blogs/BlogOne";
 import BlogTwo from "../Pages/Blogs/BlogTwo";
+import BlogThree from "../Pages/Blogs/BlogThree";
 
 
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
             {
                 path: "/blog-two",
                 element: <BlogTwo></BlogTwo>
+            },
+            {
+                path: "/blog-three",
+                element: <BlogThree></BlogThree>
             }
 
         ]

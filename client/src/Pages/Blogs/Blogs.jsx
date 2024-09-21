@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import blog1 from "../../assets/blogs/blog1.png"
+import blog3 from "../../assets/blogs/blog3.png"
+import blog2 from "../../assets/blogs/blog2.jpg"
 
 const Blogs = () => {
 
@@ -11,9 +13,9 @@ const Blogs = () => {
             </div>
 
 
-            <div className="flex justify-center gap-10  mt-10">
+            <div className="flex justify-center flex-wrap gap-10  mt-10">
                 <Link to={'/blog-one'} >
-                    <div className="card rounded card-compact  dark:bg-gray-800 w-96 shadow-xl">
+                    <div className="card rounded card-compact  dark:bg-gray-800 w-80 shadow-xl">
                         <figure>
                             <img
                                 src={blog1}
@@ -26,20 +28,33 @@ const Blogs = () => {
                     </div>
                 </Link>
 
-                <div className="flex justify-center mt-10">
-                    <Link to={'/blog-two'} >
-                        <div className="card rounded card-compact h-full dark:bg-gray-800 w-96 shadow-xl">
-                            <figure>
-                                <img
-                                    src={blog1}
-                                    alt="blog1" />
-                            </figure>
-                            <div className="card-body ">
-                                <h2 className="card-title text-justify">what is express js?</h2>
-                            </div>
+
+                <Link to={'/blog-two'} >
+                    <div className="card rounded card-compact h-full dark:bg-gray-800 w-80 shadow-xl">
+                        <figure>
+                            <img
+                                src={blog2}
+                                alt="blog1" />
+                        </figure>
+                        <div className="card-body ">
+                            <h2 className="card-title text-justify">what is express js?</h2>
                         </div>
-                    </Link>
-                </div>
+                    </div>
+                </Link>
+
+                <Link to={'/blog-three'} >
+                    <div className="card rounded card-compact h-full dark:bg-gray-800 w-80 shadow-xl">
+                        <figure>
+                            <img
+                                src={blog3}
+                                alt="blog1" />
+                        </figure>
+                        <div className="card-body ">
+                            <h2 className="card-title text-justify">what is Nest js?</h2>
+                        </div>
+                    </div>
+                </Link>
+
             </div>
 
 
