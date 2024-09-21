@@ -2,7 +2,7 @@
 
 
 ## Features: 
-1. This is a Career Nest website.
+1. This is a Career Nest website(job portal).
 2. Conditional Navbar (User Profile, Add A Job, My Jobs, Applied Jobs based on login).
 3. Firebase Authentication (Email/Password, Google, GitHub).
 4. Job by Category Tab System (Login required to view details).
