@@ -16,6 +16,7 @@ import PrivateRouter from "./PrivateRouter";
 import JobDetails from "../Pages/JobDetails/JobDetails";
 import ErroPage from "../Pages/ErroPage/ErroPage";
 import BlogOne from "../Pages/Blogs/BlogOne";
+import BlogTwo from "../Pages/Blogs/BlogTwo";
 
 
 const router = createBrowserRouter([
@@ -65,8 +66,12 @@ const router = createBrowserRouter([
                 element: <PrivateRouter><JobDetails></JobDetails></PrivateRouter>
             },
             {
-                path:"/blog-one",
-                element:<BlogOne></BlogOne>
+                path: "/blog-one",
+                element: <BlogOne></BlogOne>
+            },
+            {
+                path: "/blog-two",
+                element: <BlogTwo></BlogTwo>
             }
 
         ]

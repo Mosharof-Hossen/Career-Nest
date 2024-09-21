@@ -10,8 +10,9 @@ const Blogs = () => {
                 <p className="max-w-3xl mx-auto">Stay updated with the latest career advice, industry trends, and job search tips through our curated blogs.</p>
             </div>
 
-            <Link to={'/blog-one'} >
-                <div className="flex justify-center mt-10">
+
+            <div className="flex justify-center gap-10  mt-10">
+                <Link to={'/blog-one'} >
                     <div className="card rounded card-compact  dark:bg-gray-800 w-96 shadow-xl">
                         <figure>
                             <img
@@ -23,8 +24,25 @@ const Blogs = () => {
 
                         </div>
                     </div>
+                </Link>
+
+                <div className="flex justify-center mt-10">
+                    <Link to={'/blog-two'} >
+                        <div className="card rounded card-compact h-full dark:bg-gray-800 w-96 shadow-xl">
+                            <figure>
+                                <img
+                                    src={blog1}
+                                    alt="blog1" />
+                            </figure>
+                            <div className="card-body ">
+                                <h2 className="card-title text-justify">what is express js?</h2>
+                            </div>
+                        </div>
+                    </Link>
                 </div>
-            </Link>
+            </div>
+
+
         </div>
     );
 };
