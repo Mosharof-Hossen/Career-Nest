@@ -3,7 +3,7 @@ import { FaUsers, FaUserTie } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import { IoTimeOutline } from "react-icons/io5";
 import useAuthContext from '../../Hooks/useAuthContext';
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 
 const FeaturedJobCard = ({ job }) => {
@@ -23,7 +23,8 @@ const FeaturedJobCard = ({ job }) => {
                 timer: 1500
             })
                 .then(() => {
-                    navigate("/login")
+                    // console.log(location);
+                    return navigate("/login", { state: `/job-details/${_id}` })
                 })
         }
     }
@@ -45,7 +46,7 @@ const FeaturedJobCard = ({ job }) => {
                     <p className='flex items-center gap-1 text-sm'><CiTimer /><span>Deadline: {deadline}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUsers /><span>Job Applicants Number: {jobApplicationNumber}</span></p>
                     <p className='flex items-center gap-1 text-sm'><FaUserTie /><span>Posted By: {displayName}</span></p>
-               
+
                 </div>
                 <div className="flex items-center justify-between">
                     <h3 className='text-xl'><span className='font-bold'>{salaryRange}</span>{category == 'Part-Time' || <span>\Yrs.</span>}</h3>

@@ -1,12 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import FeaturedJobCard from './FeaturedJobCard';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import getAllJobApi from '../../api/getAllJobApi';
 
 const FeaturedJobs = () => {
     const [selectedJob, setSelectedJob] = useState("All")
-    const location = useLocation()
     
     const { data, isLoading } = useQuery({
         queryKey: ['all-jobs-homePage'],

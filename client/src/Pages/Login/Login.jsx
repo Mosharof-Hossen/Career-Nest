@@ -2,7 +2,7 @@ import { useState } from "react";
 import loginImage from "../../assets/login/login.png"
 import { useForm } from 'react-hook-form';
 import { FaGithub, FaGoogle } from 'react-icons/fa6';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthContext from "../../Hooks/useAuthContext";
 import Swal from "sweetalert2";
 
@@ -10,6 +10,8 @@ const Login = () => {
     const { signInUsingEmailPassword, loginByGoogle, loginByGithub } = useAuthContext();
     const [err, setErr] = useState("")
     const navigate = useNavigate();
+    const location = useLocation()
+    console.log(location);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         signInUsingEmailPassword(data.email, data.password)
@@ -22,7 +24,7 @@ const Login = () => {
                     timer: 1500
                 })
                     .then(() => {
-                        navigate("/")
+                        navigate(location?.state ? location?.state : "/")
                     })
             })
             .catch(() => {
@@ -41,7 +43,7 @@ const Login = () => {
                     timer: 1500
                 })
                     .then(() => {
-                        navigate("/")
+                        navigate(location?.state ? location?.state : "/")
                     })
             })
     }
@@ -57,7 +59,7 @@ const Login = () => {
                     timer: 1500
                 })
                     .then(() => {
-                        navigate("/")
+                        navigate(location?.state ? location?.state : "/")
                     })
             })
     }
